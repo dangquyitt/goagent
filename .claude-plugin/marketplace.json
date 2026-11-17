@@ -1,0 +1,15 @@
+{
+  "name": "goagent",
+  "description": "Claude Code plugins for disciplined Go coding agents",
+  "owner": {
+    "name": "dangquyitt",
+    "email": "dangquyitt@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "goagent",
+      "source": "./",
+      "description": "Go coding rules for Claude Code agents"
+    }
+  ]
+}
