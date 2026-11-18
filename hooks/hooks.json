@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat \"${CLAUDE_PLUGIN_ROOT}/rules/core.md\""
+            "command": "awk 'FNR == 1 { if (loaded[FILENAME]++) nextfile; if (NR != 1) print \"\" } 1' \"${CLAUDE_PLUGIN_ROOT}\"/rules/rfc-2119-keywords.md \"${CLAUDE_PLUGIN_ROOT}\"/rules/*.md"
           }
         ]
       }
