@@ -38,6 +38,18 @@ Older versions:
 
 Restart Claude Code after installing so the `SessionStart` hook runs.
 
+### Updating
+
+Third-party marketplaces don't auto-update by default. Update manually:
+
+```
+claude plugin update goagent@goagent
+```
+
+Then restart Claude Code or run `/reload-plugins`. To update automatically, open `/plugin`, go to **Marketplaces**, select goagent, and choose **Enable auto-update**.
+
+Releases follow [semantic versioning](https://semver.org). See [Releases](https://github.com/dangquyitt/goagent/releases) for what changed in each version.
+
 ### Try it without installing
 
 ```sh
@@ -136,4 +148,5 @@ Issues and pull requests are welcome.
    ```sh
    claude --plugin-dir .
    ```
-5. Open a pull request describing the behaviour change and how you tested it.
+5. Bump `version` in `.claude-plugin/plugin.json` as described in [`AGENTS.md`](AGENTS.md#versioning).
+6. Open a pull request describing the behaviour change and how you tested it.

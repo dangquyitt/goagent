@@ -1,6 +1,6 @@
 {
   "name": "goagent",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Go coding rules for Claude Code agents",
   "author": {
     "name": "dangquyitt",
