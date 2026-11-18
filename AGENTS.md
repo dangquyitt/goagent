@@ -6,7 +6,7 @@ Claude Code plugin that ships Go coding rules for agents. The `SessionStart` hoo
 
 Rule files follow the Claude Code `.claude/rules/` convention: one topic per file, each file self-contained.
 
-- Each rule MUST live in its own file under `rules/`, named after its topic in kebab-case, such as `table-driven-tests.md`.
+- Each rule MUST live in its own file under `rules/`, named after its topic in kebab-case, such as `testing.md`.
 - A rule file MUST open with a `# ` heading naming the rule.
 - `rules/rfc-2119-keywords.md` defines the RFC 2119 / RFC 8174 keywords once for every instruction in the session, not only goagent rules; other rule files MUST rely on it and MUST NOT repeat the interpretation sentence.
 - Apart from the keyword definitions, a rule file MUST be understandable on its own; it MUST NOT depend on another rule file being loaded before it.

@@ -15,6 +15,8 @@ goagent loads a short, strict rule set into every session so the agent asks firs
 
 - **Clarify before acting.** When an issue is unclear, the agent stops and asks concrete questions, listing the interpretations it sees and what each would change in the code. It looks up facts it can verify itself (`go.mod`, tests, `go doc`) instead of asking you.
 - **Comment-free generated code.** Intent goes into names, types, and small functions. Directives such as `//go:build`, `//go:generate`, `//go:embed`, `//nolint`, and generated-code headers are kept. Existing comments are preserved.
+- **Test file placement.** Tests for `<name>.go` go in `<name>_test.go` in the same directory, never in a separate `tests/` folder or an unrelated file. Shared helpers go in `helpers_test.go` or `internal/testutil`.
+- **testify assertions.** Tests use `assert` for results and `require` for preconditions instead of hand-rolled `if ... t.Errorf` checks. testify is added to `go.mod` when missing.
 - **Table-driven tests.** Cases that exercise the same function go into one table, each row run as a named subtest via `t.Run`. Standalone tests are kept for cases a table cannot express cleanly.
 - **Always on.** A `SessionStart` hook injects the rules into every session, so they apply without the agent having to invoke a skill.
 - **RFC 2119 wording.** Every rule uses MUST, SHOULD, and MAY as defined in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174), so each requirement is either mandatory or optional.
@@ -86,6 +88,8 @@ Each rule is one file under [`rules/`](rules/).
 | --- | --- |
 | Clarify before acting | MUST ask the developer when an issue is unclear. MUST NOT fill gaps with assumptions or placeholder code. |
 | Comment-free generated code | Generated code MUST NOT contain comments. Directives MUST be kept. Existing comments MUST be preserved. |
+| Test file placement | Tests for `<name>.go` MUST be in `<name>_test.go` in the same directory. MUST NOT use a separate test directory or unrelated file names. |
+| Assertions | MUST use testify `assert` for results and `require` for preconditions. MUST NOT hand-roll checks. |
 | Table-driven tests | Same-function cases MUST be one table run via `t.Run` with named rows. New cases MUST extend the existing table. |
 
 ### Linter compatibility
@@ -114,7 +118,7 @@ linters-settings:
 │   ├── rfc-2119-keywords.md   # shared keyword definitions, loaded first
 │   ├── clarify-before-acting.md
 │   ├── comment-free-code.md
-│   └── table-driven-tests.md
+│   └── testing.md
 └── AGENTS.md              # conventions for contributors
 ```
 
