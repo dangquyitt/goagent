@@ -15,6 +15,7 @@ goagent loads a short, strict rule set into every session so the agent asks firs
 
 - **Clarify before acting.** When an issue is unclear, the agent stops and asks concrete questions, listing the interpretations it sees and what each would change in the code. It looks up facts it can verify itself (`go.mod`, tests, `go doc`) instead of asking you.
 - **Comment-free generated code.** Intent goes into names, types, and small functions. Directives such as `//go:build`, `//go:generate`, `//go:embed`, `//nolint`, and generated-code headers are kept. Existing comments are preserved.
+- **Table-driven tests.** Cases that exercise the same function go into one table, each row run as a named subtest via `t.Run`. Standalone tests are kept for cases a table cannot express cleanly.
 - **Always on.** A `SessionStart` hook injects the rules into every session, so they apply without the agent having to invoke a skill.
 - **RFC 2119 wording.** Every rule uses MUST, SHOULD, and MAY as defined in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174), so each requirement is either mandatory or optional.
 
@@ -79,12 +80,13 @@ func (s *Stack[T]) Pop() (T, bool) {
 
 ## Rules
 
-The full rule set is in [`rules/core.md`](rules/core.md).
+Each rule is one file under [`rules/`](rules/).
 
 | Rule | Requirement |
 | --- | --- |
 | Clarify before acting | MUST ask the developer when an issue is unclear. MUST NOT fill gaps with assumptions or placeholder code. |
 | Comment-free generated code | Generated code MUST NOT contain comments. Directives MUST be kept. Existing comments MUST be preserved. |
+| Table-driven tests | Same-function cases MUST be one table run via `t.Run` with named rows. New cases MUST extend the existing table. |
 
 ### Linter compatibility
 
@@ -108,8 +110,11 @@ linters-settings:
 │   └── marketplace.json   # lets this repo act as its own marketplace
 ├── hooks/
 │   └── hooks.json         # SessionStart hook that loads the rules
-├── rules/
-│   └── core.md            # the rule set
+├── rules/                 # one file per rule
+│   ├── rfc-2119-keywords.md   # shared keyword definitions, loaded first
+│   ├── clarify-before-acting.md
+│   ├── comment-free-code.md
+│   └── table-driven-tests.md
 └── AGENTS.md              # conventions for contributors
 ```
 
@@ -118,7 +123,7 @@ linters-settings:
 Issues and pull requests are welcome.
 
 1. Fork the repo and create a branch.
-2. Edit or add rules under `rules/`. Follow the conventions in [`AGENTS.md`](AGENTS.md): every directive uses uppercase RFC 2119 keywords, and each MUST NOT is paired with the positive MUST it protects.
+2. Edit a rule or add a new file under `rules/`, one rule per file. Follow the conventions in [`AGENTS.md`](AGENTS.md): every directive uses uppercase RFC 2119 keywords, and each MUST NOT is paired with the positive MUST it protects.
 3. Validate the plugin:
    ```sh
    claude plugin validate .
